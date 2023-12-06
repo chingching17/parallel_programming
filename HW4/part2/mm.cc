@@ -41,13 +41,13 @@ void construct_matrices(int *n_ptr, int *m_ptr, int *l_ptr, int **a_mat_ptr, int
     }
 
     // print matrix data
-    std::cout << "Matrix data:\n";
-    for (int i = 0; i < *n_ptr; ++i) {
-        for (int j = 0; j < *m_ptr; ++j) {
-            cout << a_mat_ptr[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
+    // cout << "Matrix data:\n";
+    // for (int i = 0; i < *n_ptr; ++i) {
+    //     for (int j = 0; j < *m_ptr; ++j) {
+    //         cout << a_mat_ptr[i][j] << " ";
+    //     }
+    //     cout << "\n";
+    // }
 
     // 释放内存
     // for (int i = 0; i < rows; ++i) {
@@ -63,7 +63,7 @@ void construct_matrices(int *n_ptr, int *m_ptr, int *l_ptr, int **a_mat_ptr, int
 // l:     col number of matrix b
 // a_mat: a continuous memory placing n * m elements of int
 // b_mat: a continuous memory placing m * l elements of int
-void matrix_multiply(const int n, const int m, const int l, const int *a_mat, const int *b_mat);
+void matrix_multiply(const int n, const int m, const int l, const int *a_mat, const int *b_mat)
 {
 
 }
@@ -73,20 +73,20 @@ void destruct_matrices(int *a_mat, int *b_mat){
 
 }
 
-int main () {
-    int n, m, l;
-    int *a_mat, *b_mat;
+// int main () {
+//     int n, m, l;
+//     int *a_mat, *b_mat;
 
-    MPI_Init(NULL, NULL);
-    double start_time = MPI_Wtime();
+//     MPI_Init(NULL, NULL);
+//     double start_time = MPI_Wtime();
 
-    construct_matrices(&n, &m, &l, &a_mat, &b_mat);
-    matrix_multiply(n, m, l, a_mat, b_mat);
-    destruct_matrices(a_mat, b_mat);
+//     construct_matrices(&n, &m, &l, &a_mat, &b_mat);
+//     matrix_multiply(n, m, l, a_mat, b_mat);
+//     destruct_matrices(a_mat, b_mat);
 
-    double end_time = MPI_Wtime();
-    MPI_Finalize();
-    printf("MPI running time: %lf Seconds\n", end_time - start_time);
+//     double end_time = MPI_Wtime();
+//     MPI_Finalize();
+//     printf("MPI running time: %lf Seconds\n", end_time - start_time);
 
-    return 0;
-}
+//     return 0;
+// }
