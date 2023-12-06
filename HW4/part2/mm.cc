@@ -1,5 +1,8 @@
 #include <mpi.h>
 #include <cstdio>
+#include<iostream>
+
+using namespace std;
 
 // *********************************************
 // ** ATTENTION: YOU CANNOT MODIFY THIS FILE. **
@@ -12,8 +15,46 @@
 // l_ptr:     pointer to l
 // a_mat_ptr: pointer to matrix a (a should be a continuous memory space for placing n * m elements of int)
 // b_mat_ptr: pointer to matrix b (b should be a continuous memory space for placing m * l elements of int)
-void construct_matrices(int *n_ptr, int *m_ptr, int *l_ptr,
-                        int **a_mat_ptr, int **b_mat_ptr);
+void construct_matrices(int *n_ptr, int *m_ptr, int *l_ptr, int **a_mat_ptr, int **b_mat_ptr){
+    cin >> *n_ptr >> *m_ptr >> *l_ptr;
+
+    a_mat_ptr = new int*[*n_ptr];
+    for (int i = 0; i < *n_ptr; ++i) {
+        a_mat_ptr[i] = new int[*m_ptr];
+    }
+
+    for (int i = 0; i < *n_ptr; ++i) {
+        for (int j = 0; j < *m_ptr; ++j) {
+            cin >> a_mat_ptr[i][j];
+        }
+    }
+
+    b_mat_ptr = new int*[*m_ptr];
+    for (int i = 0; i < *m_ptr; ++i) {
+        b_mat_ptr[i] = new int[*l_ptr];
+    }
+
+    for (int i = 0; i < *m_ptr; ++i) {
+        for (int j = 0; j < *l_ptr; ++j) {
+            cin >> b_mat_ptr[i][j];
+        }
+    }
+
+    // print matrix data
+    std::cout << "Matrix data:\n";
+    for (int i = 0; i < *n_ptr; ++i) {
+        for (int j = 0; j < *m_ptr; ++j) {
+            cout << a_mat_ptr[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+
+    // 释放内存
+    // for (int i = 0; i < rows; ++i) {
+    //     delete[] a_mat_ptr[i];
+    // }
+    // delete[] a_mat_ptr;
+}
 
 // Just matrix multiplication (your should output the result in this function)
 // 
@@ -24,11 +65,13 @@ void construct_matrices(int *n_ptr, int *m_ptr, int *l_ptr,
 // b_mat: a continuous memory placing m * l elements of int
 void matrix_multiply(const int n, const int m, const int l, const int *a_mat, const int *b_mat);
 {
-    
+
 }
 
 // Remember to release your allocated memory
-void destruct_matrices(int *a_mat, int *b_mat);
+void destruct_matrices(int *a_mat, int *b_mat){
+
+}
 
 int main () {
     int n, m, l;
