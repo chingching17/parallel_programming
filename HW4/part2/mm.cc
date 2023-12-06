@@ -70,7 +70,11 @@ void matrix_multiply(const int n, const int m, const int l, const int *a_mat, co
 
 // Remember to release your allocated memory
 void destruct_matrices(int *a_mat, int *b_mat){
-
+    int world_rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+    if(world_rank!=0)return;
+    delete [] a_mat;
+    delete [] b_mat;
 }
 
 // int main () {
