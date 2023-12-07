@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     int div = 2;
     long long int buf;
     while(difference < world_size){
-        if(difference == 1){
+        if(!(world_rank % difference) && difference == 1){
             if(world_rank % div == 0){
                 int source = world_rank + difference;
                 MPI_Recv(&buf, 1, MPI_UNSIGNED_LONG, source, tag, MPI_COMM_WORLD, &status);
