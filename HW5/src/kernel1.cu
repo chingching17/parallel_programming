@@ -2,11 +2,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-__global__ void mandelKernel() {
+__global__ void mandelKernel(float lowerX, float lowerY, float stepX, float stepY, int width, int *data_img, int maxIterations) {
     // To avoid error caused by the floating number, use the following pseudo code
     //
     // float x = lowerX + thisX * stepX;
     // float y = lowerY + thisY * stepY;
+    int thisX = blockIdx.x * blockDim.x + threadIdx.x;
+    int thisY = blockIdx.y * blockDim.y + threadIdx.y;
+    float x = lowerX + thisX * stepX;
+    float y = lowerY + thisY * stepY;
+
+    float tmpX = x;
+    float tmpY = y;
+    int idx = thisX + thisY * width;
+    for(int i = 0; i < maxIterations; i++){
+        if (tmpX * tmpX + tmpY * tmpY > 4.f)break;
+        float new_x = tmpX * tmpX - tmpY * tmpY;
+        float new_y = 2.f * tmpX * tmpY;
+        tmpX = x + new_x;
+        tmpY = y + new_y;
+    }
+    data_img[idx] = i;
 }
 
 // Host front-end function that allocates the memory and launches the GPU kernel
