@@ -31,17 +31,14 @@ void hostFE (float upperX, float upperY, float lowerX, float lowerY, int* img, i
     float stepX = (upperX - lowerX) / resX;
     float stepY = (upperY - lowerY) / resY;
 
-    int *result_img, *data_img;
-    result_img = (int *)malloc(resX * resY * sizeof(int));
+    int *data_img;
     cudaMalloc((void **)&data_img, resX * resY * sizeof(int));
 
     dim3 ThreadsPerBlock(16, 16);
     dim3 NumOfBlocks(resX / ThreadsPerBlock.x, resY / ThreadsPerBlock.y);
     mandelKernel<<<NumOfBlocks, ThreadsPerBlock>>>(lowerX, lowerY, stepX, stepY, resX, data_img, maxIterations);
 
-    cudaMemcpy(result_img, data_img, resX * resY * sizeof(int), cudaMemcpyDeviceToHost);
-    memcpy(img, result_img, resX * resY * sizeof(int));
+    memcpy(img, data_img, resX * resY * sizeof(int));
 
     cudaFree(data_img);
-    free(result_img);
 }
