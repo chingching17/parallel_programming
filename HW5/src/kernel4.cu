@@ -46,3 +46,4 @@ void hostFE (float upperX, float upperY, float lowerX, float lowerY, int* img, i
 
     cudaFree(data_img);
 }
+// 156.35x
