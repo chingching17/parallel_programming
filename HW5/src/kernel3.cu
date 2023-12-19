@@ -8,7 +8,7 @@ __global__ void mandelKernel(float lowerX, float lowerY, float stepX, float step
     // float x = lowerX + thisX * stepX;
     // float y = lowerY + thisY * stepY;
     for(int loop = 0; loop < PixelsPerThread; loop++){
-        int thisX = blockIdx.x * blockDim.x + threadIdx.x;
+        int thisX = (blockIdx.x * blockDim.x + threadIdx.x) * PixelsPerThread + loop;
         int thisY = blockIdx.y * blockDim.y + threadIdx.y;
         float x = lowerX + thisX * stepX;
         float y = lowerY + thisY * stepY;
@@ -55,3 +55,4 @@ void hostFE (float upperX, float upperY, float lowerX, float lowerY, int* img, i
     cudaFreeHost(h_img);
 
 }
+// 74.48x
