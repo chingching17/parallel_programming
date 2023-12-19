@@ -14,7 +14,8 @@ __global__ void mandelKernel(float lowerX, float lowerY, float stepX, float step
 
     float tmpX = x;
     float tmpY = y;
-    for(int i = 0; i < maxIterations; i++){
+    int i;
+    for(i = 0; i < maxIterations; i++){
         if (tmpX * tmpX + tmpY * tmpY > 4.f)break;
         float new_x = tmpX * tmpX - tmpY * tmpY;
         float new_y = 2.f * tmpX * tmpY;
@@ -47,3 +48,5 @@ void hostFE (float upperX, float upperY, float lowerX, float lowerY, int* img, i
     cudaFreeHost(result_img);
     cudaFree(data_img);
 }
+
+// 78.07x
