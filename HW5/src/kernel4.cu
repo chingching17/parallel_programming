@@ -15,7 +15,8 @@ __global__ void mandelKernel(float lowerX, float lowerY, float stepX, float step
     float tmpX = x;
     float tmpY = y;
     int idx = thisX + thisY * width;
-    for(int i = 0; i < maxIterations; i++){
+    int i;
+    for(i = 0; i < maxIterations; i++){
         if (tmpX * tmpX + tmpY * tmpY > 4.f)break;
         float new_x = tmpX * tmpX - tmpY * tmpY;
         float new_y = 2.f * tmpX * tmpY;
