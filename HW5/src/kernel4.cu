@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-__global__ void mandelKernel(float lowerX, float lowerY, float stepX, float stepY, int width, int *data_img, int maxIterations) {
+__global__ void mandelKernel(float lowerX, float lowerY, float stepX, float stepY, int width, int *img, int maxIterations, int pitch) {
     // To avoid error caused by the floating number, use the following pseudo code
     //
     // float x = lowerX + thisX * stepX;
@@ -14,7 +14,7 @@ __global__ void mandelKernel(float lowerX, float lowerY, float stepX, float step
 
     float tmpX = x;
     float tmpY = y;
-    int idx = thisX + thisY * width;
+    // int idx = thisX + thisY * width;
     int i;
     for(i = 0; i < maxIterations; i++){
         if (tmpX * tmpX + tmpY * tmpY > 4.f)break;
@@ -23,7 +23,8 @@ __global__ void mandelKernel(float lowerX, float lowerY, float stepX, float step
         tmpX = x + new_x;
         tmpY = y + new_y;
     }
-    data_img[idx] = i;
+    int* new_img = (int *)((char*)img + thisY * pitch);
+    new_img[thisX] = i;
 }
 
 // Host front-end function that allocates the memory and launches the GPU kernel
@@ -32,14 +33,16 @@ void hostFE (float upperX, float upperY, float lowerX, float lowerY, int* img, i
     float stepX = (upperX - lowerX) / resX;
     float stepY = (upperY - lowerY) / resY;
 
+    size_t pitch;
     int *data_img;
-    cudaMalloc((void **)&data_img, resX * resY * sizeof(int));
+    cudaMallocPitch((void **)&data_img, &pitch, resX *  sizeof(int), resY);
 
     dim3 ThreadsPerBlock(16, 16);
     dim3 NumOfBlocks(resX / ThreadsPerBlock.x, resY / ThreadsPerBlock.y);
-    mandelKernel<<<NumOfBlocks, ThreadsPerBlock>>>(lowerX, lowerY, stepX, stepY, resX, data_img, maxIterations);
+    mandelKernel<<<NumOfBlocks, ThreadsPerBlock>>>(lowerX, lowerY, stepX, stepY, resX, data_img, maxIterations, pitch);
 
-    memcpy(img, data_img, resX * resY * sizeof(int));
+    cudaMemcpy2D(img, resX * sizeof(int), data_img, pitch, resX * sizeof(int), resY, cudaMemcpyDeviceToHost);
+     // seg fault because i use malloc
 
     cudaFree(data_img);
 }
