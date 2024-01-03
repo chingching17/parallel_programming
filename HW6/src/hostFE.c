@@ -18,16 +18,16 @@ void hostFE(int filterWidth, float *filter, int imageHeight, int imageWidth,
     // create kernel memory
     cl_mem input_img_memory = clCreateBuffer(*context, CL_MEM_READ_WRITE,  sizeof(float) * img_size, NULL, &ret);
     cl_mem filter_memory = clCreateBuffer(*context, CL_MEM_READ_WRITE, sizeof(float) * filterSize, NULL, &ret);
-    cl_mem Height = clCreateBuffer(*context, CL_MEM_READ_WRITE, sizeof(int), NULL, &ret);
     cl_mem Width = clCreateBuffer(*context, CL_MEM_READ_WRITE, sizeof(int), NULL, &ret);
+    cl_mem Height = clCreateBuffer(*context, CL_MEM_READ_WRITE, sizeof(int), NULL, &ret);
     cl_mem filterWidth_memory = clCreateBuffer(*context, CL_MEM_READ_WRITE, sizeof(int), NULL, &ret);
     cl_mem output_image_memory = clCreateBuffer(*context, CL_MEM_READ_WRITE, sizeof(float) * img_size, NULL, &ret);
 
     // init memory for memory copy
     ret = clEnqueueWriteBuffer(command_queue, input_img_memory, CL_TRUE, 0, img_size * sizeof(float), inputImage, 0, NULL, NULL);
     ret = clEnqueueWriteBuffer(command_queue, filter_memory, CL_TRUE, 0, filterSize * sizeof(float), filter, 0, NULL, NULL);
-    ret = clEnqueueWriteBuffer(command_queue, Height, CL_TRUE, 0, sizeof(int), &imageHeight, 0, NULL, NULL);
     ret = clEnqueueWriteBuffer(command_queue, Width, CL_TRUE, 0, sizeof(int), &imageWidth, 0, NULL, NULL);
+    ret = clEnqueueWriteBuffer(command_queue, Height, CL_TRUE, 0, sizeof(int), &imageHeight, 0, NULL, NULL);
     ret = clEnqueueWriteBuffer(command_queue, filterWidth_memory, CL_TRUE, 0, sizeof(int), &filterWidth, 0, NULL, NULL);
 
     // create kernel
